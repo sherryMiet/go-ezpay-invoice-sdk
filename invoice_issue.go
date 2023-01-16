@@ -8,10 +8,10 @@ import (
 )
 
 const (
-	TestInvoiceIssueURL = "https://cinv.ezpay.com.tw/Api/invoice_issue"
-	InvoiceIssueURL     = "https://inv.ezpay.com.tw/Api/invoice_issue"
-	Version             = "1.5"
-	RespondType         = "JSON"
+	TestInvoiceIssueURL     = "https://cinv.ezpay.com.tw/Api/invoice_issue"
+	InvoiceIssueURL         = "https://inv.ezpay.com.tw/Api/invoice_issue"
+	InvoiceIssueVersion     = "1.5"
+	InvoiceIssueRespondType = "JSON"
 )
 
 type InvoiceIssueCall struct {
@@ -182,7 +182,6 @@ func (i *InvoiceIssueRequestPostData_) B2CEZPAYMember(BuyerName, BuyerAddress, B
 	i.BuyerEmail = BuyerEmail
 	i.CarrierNum = CarrierNum
 	i.PrintFlag = "N"
-	i.KioskPrintFlag = "1"
 	return i
 }
 
@@ -195,7 +194,6 @@ func (i *InvoiceIssueRequestPostData_) B2CPhoneCarrier(BuyerName, BuyerAddress, 
 	i.BuyerEmail = BuyerEmail
 	i.CarrierNum = CarrierNum
 	i.PrintFlag = "N"
-	i.KioskPrintFlag = "1"
 	return i
 }
 
@@ -203,12 +201,11 @@ func (i *InvoiceIssueRequestPostData_) B2CPhoneCarrier(BuyerName, BuyerAddress, 
 func (i *InvoiceIssueRequestPostData_) B2CCertificate(BuyerName, BuyerAddress, BuyerEmail, CarrierNum string) *InvoiceIssueRequestPostData_ {
 	i.Category = "B2C"
 	i.BuyerName = BuyerName
-	i.CarrierType = "0"
+	i.CarrierType = "1"
 	i.BuyerAddress = BuyerAddress
 	i.BuyerEmail = BuyerEmail
 	i.CarrierNum = CarrierNum
 	i.PrintFlag = "N"
-	i.KioskPrintFlag = "1"
 	return i
 }
 
@@ -216,12 +213,10 @@ func (i *InvoiceIssueRequestPostData_) B2CCertificate(BuyerName, BuyerAddress, B
 func (i *InvoiceIssueRequestPostData_) B2CDonation(BuyerName, BuyerAddress, BuyerEmail, LoveCode string) *InvoiceIssueRequestPostData_ {
 	i.Category = "B2C"
 	i.BuyerName = BuyerName
-	i.CarrierType = "0"
 	i.BuyerAddress = BuyerAddress
 	i.BuyerEmail = BuyerEmail
 	i.LoveCode = LoveCode
 	i.PrintFlag = "N"
-	i.KioskPrintFlag = "1"
 	return i
 }
 
@@ -229,11 +224,9 @@ func (i *InvoiceIssueRequestPostData_) B2CDonation(BuyerName, BuyerAddress, Buye
 func (i *InvoiceIssueRequestPostData_) B2CNothing(BuyerName, BuyerAddress, BuyerEmail string) *InvoiceIssueRequestPostData_ {
 	i.Category = "B2C"
 	i.BuyerName = BuyerName
-	i.CarrierType = "0"
 	i.BuyerAddress = BuyerAddress
 	i.BuyerEmail = BuyerEmail
 	i.PrintFlag = "Y"
-	i.KioskPrintFlag = "1"
 	return i
 }
 
@@ -248,8 +241,8 @@ func (i *InvoiceIssueRequestPostData_) SetItem(ItemName, ItemCount, ItemUnit, It
 
 func (c *Client) InvoiceIssue(postData *InvoiceIssueRequestPostData_) *InvoiceIssueCall {
 	postData.TimeStamp = strconv.Itoa(int(time.Now().Unix()))
-	postData.Version = Version
-	postData.RespondType = RespondType
+	postData.Version = InvoiceIssueVersion
+	postData.RespondType = InvoiceIssueRespondType
 	paramsStr := StructToParamsMap(postData)
 	postDataStr := ParamsMapToURLEncode(paramsStr)
 	encrypt, err := AesCBCEncrypt([]byte(postDataStr), []byte(c.HashKey), []byte(c.HashIV))
@@ -271,7 +264,7 @@ func (i *InvoiceIssueCall) Do() *InvoiceIssueResponse {
 	PostData := make(map[string]string)
 	PostData["MerchantID_"] = i.InvoiceIssueRequest.MerchantID_
 	PostData["PostData_"] = i.InvoiceIssueRequest.PostData_
-	body, err := SendEZPayRequest(&PostData, InvoiceIssueURL)
+	body, err := SendEZPayRequest(&PostData, InvoiceInvalidURL)
 	if err != nil {
 		logrus.Error(err)
 		return nil
@@ -288,7 +281,7 @@ func (i *InvoiceIssueCall) DoTest() *InvoiceIssueResponse {
 	PostData := make(map[string]string)
 	PostData["MerchantID_"] = i.InvoiceIssueRequest.MerchantID_
 	PostData["PostData_"] = i.InvoiceIssueRequest.PostData_
-	body, err := SendEZPayRequest(&PostData, TestInvoiceIssueURL)
+	body, err := SendEZPayRequest(&PostData, TestInvoiceInvalidURL)
 	if err != nil {
 		logrus.Error(err)
 		return nil
