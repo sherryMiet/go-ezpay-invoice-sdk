@@ -264,7 +264,7 @@ func (i *InvoiceIssueCall) Do() *InvoiceIssueResponse {
 	PostData := make(map[string]string)
 	PostData["MerchantID_"] = i.InvoiceIssueRequest.MerchantID_
 	PostData["PostData_"] = i.InvoiceIssueRequest.PostData_
-	body, err := SendEZPayRequest(&PostData, InvoiceInvalidURL)
+	body, err := SendEZPayRequest(&PostData, InvoiceIssueURL)
 	if err != nil {
 		logrus.Error(err)
 		return nil
@@ -281,7 +281,7 @@ func (i *InvoiceIssueCall) DoTest() *InvoiceIssueResponse {
 	PostData := make(map[string]string)
 	PostData["MerchantID_"] = i.InvoiceIssueRequest.MerchantID_
 	PostData["PostData_"] = i.InvoiceIssueRequest.PostData_
-	body, err := SendEZPayRequest(&PostData, TestInvoiceInvalidURL)
+	body, err := SendEZPayRequest(&PostData, TestInvoiceIssueURL)
 	if err != nil {
 		logrus.Error(err)
 		return nil
