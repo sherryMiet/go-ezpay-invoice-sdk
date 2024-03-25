@@ -164,7 +164,7 @@ func (i *InvoiceIssueRequestPostData_) IssueAppointment(CreateStatusTime string)
 }
 
 func (i *InvoiceIssueRequestPostData_) B2B(BuyerName, BuyerUBN, BuyerAddress, BuyerEmail string) *InvoiceIssueRequestPostData_ {
-	i.Category = "B2C"
+	i.Category = "B2B"
 	i.BuyerName = BuyerName
 	i.BuyerUBN = BuyerUBN
 	i.BuyerAddress = BuyerAddress
