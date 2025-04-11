@@ -97,7 +97,7 @@ type InvoiceIssueRequestPostData_ struct {
 type InvoiceIssueResponse struct {
 	Status  string
 	Message string
-	Result  string
+	Result  json.RawMessage
 }
 
 type InvoiceIssueResponseResult struct {
