@@ -38,7 +38,7 @@ type InvoiceInvalidRequestPostData_ struct {
 type InvoiceInvalidResponse struct {
 	Status  string
 	Message string
-	Result  string
+	Result  json.RawMessage
 }
 
 type InvoiceInvalidResponseResult struct {
