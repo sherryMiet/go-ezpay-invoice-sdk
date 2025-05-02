@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"mime/multipart"
 	"net/http"
 	"net/url"
@@ -138,13 +139,13 @@ func SendEZPayRequest(postData *map[string]string, URL string) ([]byte, error) {
 		w.WriteField(k, v)
 	}
 	w.Close()
-	fmt.Println(body.String())
+	log.Print(body.String())
 	req, _ := http.NewRequest(http.MethodPost, URL, body)
 	req.Header.Set("Content-Type", w.FormDataContentType())
 	resp, _ := http.DefaultClient.Do(req)
 	data, _ := ioutil.ReadAll(resp.Body)
 	resp.Body.Close()
-	fmt.Println(resp.StatusCode)
-	fmt.Printf("%s", data)
+	log.Print(resp.StatusCode)
+	log.Printf("%s", data)
 	return data, nil
 }
