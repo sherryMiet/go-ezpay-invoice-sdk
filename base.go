@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
@@ -138,6 +139,7 @@ func SendEZPayRequest(postData *map[string]string, URL string) ([]byte, error) {
 		w.WriteField(k, v)
 	}
 	w.Close()
+	logrus.Debug(body.String())
 	req, _ := http.NewRequest(http.MethodPost, URL, body)
 	req.Header.Set("Content-Type", w.FormDataContentType())
 	resp, _ := http.DefaultClient.Do(req)
