@@ -2,6 +2,7 @@ package ezpay_invoice
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/sirupsen/logrus"
 	"strconv"
 	"time"
@@ -244,15 +245,15 @@ func (c *Client) InvoiceIssue(postData *InvoiceIssueRequestPostData_) *InvoiceIs
 	postData.Version = InvoiceIssueVersion
 	postData.RespondType = InvoiceIssueRespondType
 	paramsStr := StructToParamsMap(postData)
-	logrus.Debug(paramsStr)
+	fmt.Println(paramsStr)
 	postDataStr := ParamsMapToURLEncode(paramsStr)
-	logrus.Debug(postDataStr)
+	fmt.Println(postDataStr)
 	encrypt, err := AesCBCEncrypt([]byte(postDataStr), []byte(c.HashKey), []byte(c.HashIV))
 	if err != nil {
 		logrus.Error(err)
 		return nil
 	}
-	logrus.Debug(encrypt)
+	fmt.Println(encrypt)
 	return &InvoiceIssueCall{
 		HashIV:  c.HashIV,
 		HashKey: c.HashKey,
